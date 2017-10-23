@@ -15,37 +15,37 @@ public class Main {
     private final static int N = (int) Math.pow(10, 6);
     //extent of query at each dimension
 //    //abs02
-//    private final static double q_i = 2 * Math.pow(10, -3);//w0
-//    private final static double q_i = 6 * Math.pow(10, -3);//w1
-//    private final static double q_i = 2 * Math.pow(10, -2);//w2
+//    private final static double q_i = 1 * Math.pow(10, -3);//w0
+//    private final static double q_i = 3 * Math.pow(10, -3);//w1
+//    private final static double q_i = 1 * Math.pow(10, -2);//w2
 //    //bit02
-//    private final static double q_i = 2 * Math.pow(10, -3);//w0
-//    private final static double q_i = 6 * Math.pow(10, -3);//w1
-//    private final static double q_i = 2 * Math.pow(10, -2);//w2
+//    private final static double q_i = 9 * Math.pow(10, -4);//w0
+//    private final static double q_i = 3 * Math.pow(10, -3);//w1
+//    private final static double q_i = 1 * Math.pow(10, -2);//w2
 //    //dia02
-//    private final static double q_i = 2 * Math.pow(10, -3);//w0
-//    private final static double q_i = 6 * Math.pow(10, -3);//w1
-//    private final static double q_i = 2 * Math.pow(10, -2);//w2
+//    private final static double q_i = 1 * Math.pow(10, -3);//w0
+//    private final static double q_i = 3 * Math.pow(10, -3);//w1
+//    private final static double q_i = 9 * Math.pow(10, -3);//w2
 //    //par02
-//    private final static double q_i = 2 * Math.pow(10, -3);//w0
-//    private final static double q_i = 6 * Math.pow(10, -3);//w1
-//    private final static double q_i = 2 * Math.pow(10, -2);//w2
+//    private final static double q_i = 9 * Math.pow(10, -4);//w0
+//    private final static double q_i = 3 * Math.pow(10, -3);//w1
+//    private final static double q_i = 9 * Math.pow(10, -3);//w2
 //    //ped02
-//    private final static double q_i = 2 * Math.pow(10, -3);//w0
-//    private final static double q_i = 6 * Math.pow(10, -3);//w1
-//    private final static double q_i = 2 * Math.pow(10, -2);//w2
+//    private final static double q_i = 9 * Math.pow(10, -4);//w0
+//    private final static double q_i = 3 * Math.pow(10, -3);//w1
+//    private final static double q_i = 9 * Math.pow(10, -3);//w2
 //    //pha02
-//    private final static double q_i = 2 * Math.pow(10, -3);//w0
-//    private final static double q_i = 6 * Math.pow(10, -3);//w1
-//    private final static double q_i = 2 * Math.pow(10, -2);//w2
+//    private final static double q_i = 9 * Math.pow(10, -4);//w0
+//    private final static double q_i = 3 * Math.pow(10, -3);//w1
+//    private final static double q_i = 9 * Math.pow(10, -3);//w2
 //    //rea02
-//    private final static double q_i = 1.4 * Math.pow(10, -3);//w0
-//    private final static double q_i = 4.6 * Math.pow(10, -3);//w1
-//    private final static double q_i = 1.4 * Math.pow(10, -2);//w2
+//    private final static double q_i = 7 * Math.pow(10, -4);//w0
+//    private final static double q_i = 2 * Math.pow(10, -3);//w1
+    private final static double q_i = 7 * Math.pow(10, -3);//w2
 //    //uni02
-//    private final static double q_i = 2 * Math.pow(10, -3);//w0
-//    private final static double q_i = 6 * Math.pow(10, -3);//w1
-    private final static double q_i = 2 * Math.pow(10, -2);//w2
+//    private final static double q_i = 1 * Math.pow(10, -3);//w0
+//    private final static double q_i = 3 * Math.pow(10, -3);//w1
+//    private final static double q_i = 1 * Math.pow(10, -2);//w2
     private static Map<String, Double> dataset_root_densities = new TreeMap<>();
 
     static {
@@ -59,7 +59,7 @@ public class Main {
         dataset_root_densities.put("uni02", 0.0);
     }
 
-    private final static double ROOT_DENSITY = dataset_root_densities.get("uni02");
+    private final static double ROOT_DENSITY = dataset_root_densities.get("rea02");
 
     /**
      * Calculates logarithm of a number with any base
