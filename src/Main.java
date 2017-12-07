@@ -127,10 +127,14 @@ public class Main {
         return 1 + sum;
     }
 
+
+
     public static void main(String[] args) {
         Main main = new Main();
 
-        double ret = main.calculateModel();
-        System.out.printf("Disk Accesses:%.5f", ret);
+//        double ret = main.calculateModel();
+//        System.out.printf("Disk Accesses:%.5f", ret);
+
+
     }
 }
