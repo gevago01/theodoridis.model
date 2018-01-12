@@ -6,82 +6,109 @@ import java.util.Map;
  */
 public class FutileModel {
 
-    private static Map<String,Double> leafNodesDensities = new HashMap<>();
-    static {
-        leafNodesDensities.put("abs02", 0.961267);
-        leafNodesDensities.put("bit02", 0.77524);
-        leafNodesDensities.put("dia02", 0.775538);
-        leafNodesDensities.put("par02", 0.922722);
-        leafNodesDensities.put("ped02", 0.77524);
-        leafNodesDensities.put("pha02", 0.77524);
-        leafNodesDensities.put("rea02", 0.850372);
-        leafNodesDensities.put("uni02", 0.77524);
+    private static Map<String, Double> objectsDensities = new HashMap<>();
 
-        leafNodesDensities.put("abs03", 0.917678);
-        leafNodesDensities.put("bit03", 0.434413);
-        leafNodesDensities.put("dia03", 0.434413);
-        leafNodesDensities.put("par03", 0.695829);
-        leafNodesDensities.put("ped03", 0.434413);
-        leafNodesDensities.put("pha03", 0.434413);
-        leafNodesDensities.put("rea03", 0.434413);
-        leafNodesDensities.put("uni03", 0.434413);
-        leafNodesDensities.put("myreal03", 0.757);
+    static {
+        objectsDensities.put("abs02", 0.69);
+        objectsDensities.put("bit02", 0.0);
+        objectsDensities.put("dia02", 0.000002);
+        objectsDensities.put("par02", 0.4492);
+        objectsDensities.put("ped02", 0.0);
+        objectsDensities.put("pha02", 0.0);
+        objectsDensities.put("rea02", 0.1216);
+        objectsDensities.put("uni02", 0.0);
+
+        objectsDensities.put("abs03", 0.69);
+        objectsDensities.put("bit03", 0.0);
+        objectsDensities.put("dia03", 0.0);
+        objectsDensities.put("par03", 0.1495);
+        objectsDensities.put("ped03", 0.0);
+        objectsDensities.put("pha03", 0.0);
+        objectsDensities.put("rea03", 0.0);
+        objectsDensities.put("uni03", 0.0);
+        objectsDensities.put("myreal03", 0.0);
     }
+
+
     /********************change these to get the probability******************/
-    private final static double leafNodeDensity = leafNodesDensities.get("uni02");
-    private final static int DIMENSIONALITY = 2;
-    private final static double DATASET_SIZE = 1e6;
-    private static double queryArea = 5e-6;
-    /************************************************************************/
+    private final static String DATASET="abs03";
+    private final static double objectDensity = objectsDensities.get(DATASET);
     private final static int FANOUT = 70;
+    private final static int DIMENSIONALITY = 3;
+    private final static double leafNodeDensity = Math.pow((1+((Math.pow(objectDensity,1.0/DIMENSIONALITY)-1)/(Math.pow(FANOUT,1.0/DIMENSIONALITY)))),DIMENSIONALITY);
+    private final static double DATASET_SIZE = 11958999;
+    private static double queryArea = 1e-6;
+    private static double spaceArea = 100;
+    private static double g = 3000;
+    /************************************************************************/
+
     private static long L;
 
-    private static double queryExtent_i = Math.pow(queryArea,1.0/DIMENSIONALITY);
-    private static double leafNodeArea= leafNodeDensity * FANOUT / DATASET_SIZE;
-    private static double leafNodeExtent_i = Math.pow(leafNodeArea,1.0/DIMENSIONALITY);
-    FutileModel() {
-        L = (int)Math.pow(Math.ceil(1+queryExtent_i/leafNodeExtent_i),DIMENSIONALITY);
-//        System.out.println("L is:"+L);
+    private static double queryExtent_i = Math.pow(queryArea, 1.0 / DIMENSIONALITY);
+    private static double leafNodeArea= leafNodeDensity * FANOUT  / DATASET_SIZE;
+    //    private static double leafNodeArea = 54.2 * spaceArea / Math.pow(g, DIMENSIONALITY);
+    private static double leafNodeExtent_i = Math.pow(leafNodeArea, 1.0 / DIMENSIONALITY);
+
+
+
+    public double predictLeafNodeAccesses(){
+        int numberOfLeafNodes = (int)Math.ceil(DATASET_SIZE/FANOUT);
+
+        double ln_extent_i = Math.pow(leafNodeArea,1.0/DIMENSIONALITY);
+        return numberOfLeafNodes * Math.pow((ln_extent_i+queryExtent_i),DIMENSIONALITY)/spaceArea;
     }
 
+
+
+    FutileModel() {
+        System.out.println("LeafNodeArea:");
+        System.out.println(leafNodeArea);
+        L = (int) Math.pow(Math.ceil(1 + queryExtent_i / leafNodeExtent_i), DIMENSIONALITY);
+//        L = (int) Math.pow(Math.ceil(1 + Math.sqrt(retrieveEmptyArea()) / leafNodeExtent_i), DIMENSIONALITY);
+        System.out.println("L is:" + L);
+    }
 
 
     public double calculateModel() {
         double sum = 0;
         for (long i = 1; i <= L; i++) {
 //            System.out.println(calculateProbability(i));
-            double pro=(1.0/L)*calculateProbability(i);
+            double pro = (1.0 / L) * calculateProbability(i);
 //            System.out.println(pro);
 //            if (!(Double.isNaN(pro) || pro>1 || pro<0)) {
-                sum += pro;
+            sum += pro;
 
 //            }
         }
-
         return sum;
+    }
+
+    public double retrieveEmptyArea() {
+        return (1.0 - objectDensity)  * Math.pow((Math.pow(spaceArea, 1.0 / DIMENSIONALITY)/g + queryExtent_i), DIMENSIONALITY);
     }
 
     private double calculateProbability(long numOfLeafNodes) {
 //        System.out.println(FANOUT + " AND "+numOfLeafNodes+" gives "+((double)FANOUT / numOfLeafNodes));
 //        System.out.println(queryArea+ " AND "+numOfLeafNodes+" gives "+(queryArea / numOfLeafNodes));
-        double d=Math.pow((1 - ((queryArea / numOfLeafNodes) / (leafNodeDensity * FANOUT / DATASET_SIZE))), ((double)FANOUT / numOfLeafNodes));
-//        if (Double.isNaN(d)) {
-//            System.out.println("-------------------");
-//            System.out.println(queryArea);
-//            System.out.println(numOfLeafNodes);
-//            System.out.println(leafNodeDensity);
-//            System.out.println(FANOUT);
-//            System.out.println(DATASET_SIZE);
-//            System.out.println("-------------------");
-//        }
-        return Math.pow((1 - ((queryArea / numOfLeafNodes) / (leafNodeDensity * FANOUT / DATASET_SIZE))), ((double)FANOUT / numOfLeafNodes));
-
+        double d = Math.pow((1 - ((retrieveEmptyArea() / numOfLeafNodes) / (leafNodeDensity * FANOUT / DATASET_SIZE))), ((double) FANOUT / numOfLeafNodes));
+        if (Double.isNaN(d)) {
+            System.out.println("-------------------");
+            System.out.println(queryArea);
+            System.out.println(numOfLeafNodes);
+            System.out.println(retrieveEmptyArea());
+            System.out.println(leafNodeDensity);
+            System.out.println(FANOUT);
+            System.out.println(DATASET_SIZE);
+            System.out.println("-------------------");
+        }
+        return Math.pow((1 - ((retrieveEmptyArea() / numOfLeafNodes) / (leafNodeDensity * FANOUT / DATASET_SIZE))), ((double) FANOUT / numOfLeafNodes));
     }
 
     public static void main(String[] args) {
-        FutileModel mm=new FutileModel();
+        FutileModel mm = new FutileModel();
         double ds_prob = mm.calculateModel();
         System.out.println(ds_prob);
+        System.out.println(mm.predictLeafNodeAccesses());
 
 
     }
