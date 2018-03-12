@@ -34,7 +34,7 @@ public class FutileModel {
     }
 
 
-    /********************change these to get the probability******************/
+    /********************change these to get the results******************/
     private final static String DATASET = "par02";
     private final static int DIMENSIONALITY = 2;
     private static double queryArea = 1e-4;
