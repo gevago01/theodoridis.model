@@ -38,7 +38,7 @@ public class FutileModel {
     private final static String DATASET = "par02";
     private final static int DIMENSIONALITY = 2;
     private static double queryArea = 1e-4;
-    private final static double DATASET_SIZE = 1e6;
+    private final static double DATASET_SIZE = 1048576;
     //dataset size is 10^6 unless the dataset is any of the following:
     //par02 1048576
     //ped02 1034621
@@ -104,8 +104,9 @@ public class FutileModel {
             //System.exit(1);
             //}
 
-            double disk_time = (totalLA - futile) * TDISK;
-            //System.out.println("Useful Accesses:" + (totalLA - futile));
+            double disk_time = (totalLA + futile) * TDISK;
+//            System.out.println("Useful Accesses:" + (totalLA - futile));
+//            System.out.println("Futile:" + (futile));
             double grid_time = mm.cellAccesses() * TCELL;
             double access_time = disk_time + (HEIGHT) * grid_time;
             if (access_time <= last) {
